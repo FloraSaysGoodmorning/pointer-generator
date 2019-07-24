@@ -59,7 +59,7 @@ class Example(object):
 
         # Get the decoder input sequence and target sequence
         self.dec_input, self.target = self.get_dec_inp_targ_seqs(
-            abs_ids, hps.max_dec_steps, start_decoding, stop_decoding)
+            abs_ids, hps.max_dec_steps.value, start_decoding, stop_decoding)
         self.dec_len = len(self.dec_input)
 
         # If using pointer-generator mode, we need to store some extra info
@@ -179,7 +179,7 @@ class Batch(object):
             self.art_oovs = [ex.article_oovs for ex in example_list]
             # Store the version of the enc_batch that uses the article OOV ids
             self.enc_batch_extend_vocab = np.zeros(
-                (hps.batch_size, max_enc_seq_len), dtype=np.int32)
+                (hps.batch_size.value, max_enc_seq_len), dtype=np.int32)
             for i, ex in enumerate(example_list):
                 self.enc_batch_extend_vocab[i, :] = ex.enc_input_extend_vocab[:]
 
@@ -194,7 +194,7 @@ class Batch(object):
             """
         # Pad the inputs and targets
         for ex in example_list:
-            ex.pad_decoder_inp_targ(hps.max_dec_steps, self.pad_id)
+            ex.pad_decoder_inp_targ(hps.max_dec_steps.value, self.pad_id)
 
         # Initialize the numpy arrays.
         # Note: our decoder inputs and targets must be the same length for each batch (second dimension = max_dec_steps) because we do not use a dynamic_rnn for decoding. However I believe this is possible, or will soon be possible, with Tensorflow 1.0, in which case it may be best to upgrade to that.
