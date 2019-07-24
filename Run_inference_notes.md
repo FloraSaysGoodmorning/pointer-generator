@@ -14,9 +14,19 @@ instead of just a single `train.bin`, `val.bin` and `test.bin`,  according to [h
 
 These chunked files will be saved in `cnn_data/finished_files/chunked`, there's 287 chunks of training data, 13 chunks of eval data, 11 chunks of test data.
 
-2. Infer
+2. Install pyrouge  
+> `pip3 install pyrouge`  
+
+Download the rouge 1.5.5 folder from gcs if it's not already under root of this repo [Origin of the folder](https://github.com/andersjo/pyrouge/tree/master/tools/ROUGE-1.5.5)  
+> `gsutil cp -r gs://amlg-dev-packages/ROUGE-1.5.5/ /home/jupyter/pointer-generator/`  
+
+Set the path according to [here](https://github.com/bheinzerling/pyrouge#installation)   
+> `set pyrouge_set_rouge_path /home/jupyter/pointer-generator/ROUGE-1.5.5`
+
+at last set the path to the perl script
+
 ```
-python run_summarization.py \
+python3 run_summarization.py \
 --mode=eval \
 --data_path=/home/jupyter/cnn_data/finished_files/chunked/val_000.bin \
 --vocab_path=/home/jupyter/cnn_data/finished_files/vocab \

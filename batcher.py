@@ -45,7 +45,7 @@ class Example(object):
 
         # Process the article
         article_words = article.split()
-        if len(article_words) > hps.max_enc_steps:
+        if len(article_words) > hps.max_enc_steps.value:
             article_words = article_words[:hps.max_enc_steps]
         self.enc_len = len(article_words)  # store the length after truncation but before padding
         # list of word ids; OOVs are represented by the id for UNK token
