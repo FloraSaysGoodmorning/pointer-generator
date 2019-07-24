@@ -318,7 +318,7 @@ def main(unused_argv):
     for key, val in FLAGS.__flags.items():  # for each flag
         if key in hparam_list:  # if it's in the list
             hps_dict[key] = val  # add it to the dict
-            print(key, val)
+            print(key, val.parse())
     hps = namedtuple("HParams", hps_dict.keys())(**hps_dict)
 
     # Create a batcher object that will create minibatches of data
