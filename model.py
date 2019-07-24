@@ -229,7 +229,8 @@ class SummarizationModel(object):
             # Some initializers
             self.rand_unif_init = tf.random_uniform_initializer(
                 -hps.rand_unif_init_mag.value, hps.rand_unif_init_mag.value, seed=123)
-            self.trunc_norm_init = tf.truncated_normal_initializer(stddev=hps.trunc_norm_init_std)
+            self.trunc_norm_init = tf.truncated_normal_initializer(
+                stddev=hps.trunc_norm_init_std.value)
 
             # Add embedding matrix (shared by the encoder and decoder inputs)
             with tf.variable_scope('embedding'):
@@ -340,7 +341,7 @@ class SummarizationModel(object):
 
         # Apply adagrad optimizer
         optimizer = tf.train.AdagradOptimizer(
-            self._hps.lr.value, initial_accumulator_value=self._hps.adagrad_init_acc)
+            self._hps.lr.value, initial_accumulator_value=self._hps.adagrad_init_acc.value)
         with tf.device("/gpu:0"):
             self._train_op = optimizer.apply_gradients(
                 zip(grads, tvars), global_step=self.global_step, name='train_step')
