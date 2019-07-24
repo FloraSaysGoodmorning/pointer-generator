@@ -319,7 +319,7 @@ def main(unused_argv):
         if key in hparam_list:  # if it's in the list
             hps_dict[key] = val  # add it to the dict
             if key == 'batch_size':
-                print(key, val.parse('int'))
+                print(key, val.value)
     hps = namedtuple("HParams", hps_dict.keys())(**hps_dict)
 
     # Create a batcher object that will create minibatches of data
