@@ -46,7 +46,7 @@ class Example(object):
         # Process the article
         article_words = article.split()
         if len(article_words) > hps.max_enc_steps.value:
-            article_words = article_words[:hps.max_enc_steps]
+            article_words = article_words[:hps.max_enc_steps.value]
         self.enc_len = len(article_words)  # store the length after truncation but before padding
         # list of word ids; OOVs are represented by the id for UNK token
         self.enc_input = [vocab.word2id(w) for w in article_words]
@@ -160,9 +160,9 @@ class Batch(object):
 
         # Initialize the numpy arrays
         # Note: our enc_batch can have different length (second dimension) for each batch because we use dynamic_rnn for the encoder.
-        self.enc_batch = np.zeros((hps.batch_size, max_enc_seq_len), dtype=np.int32)
-        self.enc_lens = np.zeros((hps.batch_size), dtype=np.int32)
-        self.enc_padding_mask = np.zeros((hps.batch_size, max_enc_seq_len), dtype=np.float32)
+        self.enc_batch = np.zeros((hps.batch_size.value, max_enc_seq_len), dtype=np.int32)
+        self.enc_lens = np.zeros((hps.batch_size.value), dtype=np.int32)
+        self.enc_padding_mask = np.zeros((hps.batch_size.value, max_enc_seq_len), dtype=np.float32)
 
         # Fill in the numpy arrays
         for i, ex in enumerate(example_list):
@@ -198,9 +198,11 @@ class Batch(object):
 
         # Initialize the numpy arrays.
         # Note: our decoder inputs and targets must be the same length for each batch (second dimension = max_dec_steps) because we do not use a dynamic_rnn for decoding. However I believe this is possible, or will soon be possible, with Tensorflow 1.0, in which case it may be best to upgrade to that.
-        self.dec_batch = np.zeros((hps.batch_size, hps.max_dec_steps), dtype=np.int32)
-        self.target_batch = np.zeros((hps.batch_size, hps.max_dec_steps), dtype=np.int32)
-        self.dec_padding_mask = np.zeros((hps.batch_size, hps.max_dec_steps), dtype=np.float32)
+        self.dec_batch = np.zeros((hps.batch_size.value, hps.max_dec_steps.value), dtype=np.int32)
+        self.target_batch = np.zeros(
+            (hps.batch_size.value, hps.max_dec_steps.value), dtype=np.int32)
+        self.dec_padding_mask = np.zeros(
+            (hps.batch_size.value, hps.max_dec_steps.value), dtype=np.float32)
 
         # Fill in the numpy arrays
         for i, ex in enumerate(example_list):
@@ -332,8 +334,8 @@ class Batcher(object):
 
                 # Group the sorted Examples into batches, optionally shuffle the batches, and place in the batch queue.
                 batches = []
-                for i in range(0, len(inputs), self._hps.batch_size):
-                    batches.append(inputs[i:i + self._hps.batch_size])
+                for i in range(0, len(inputs), self._hps.batch_size.value):
+                    batches.append(inputs[i:i + self._hps.batch_size.value])
                 if not self._single_pass:
                     shuffle(batches)
                 for b in batches:  # each b is a list of Example objects
@@ -341,7 +343,7 @@ class Batcher(object):
 
             else:  # beam search decode mode
                 ex = self._example_queue.get()
-                b = [ex for _ in range(self._hps.batch_size)]
+                b = [ex for _ in range(self._hps.batch_size.value)]
                 self._batch_queue.put(Batch(b, self._hps, self._vocab))
 
     def watch_threads(self):
