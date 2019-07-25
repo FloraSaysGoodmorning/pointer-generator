@@ -33,6 +33,7 @@ Make a new folder for logs `pg-log` under root, download pretrained pointer-gene
 ```
 python3 run_summarization.py \
 --mode=decode \
+--batch_size=
 --data_path=/home/jupyter/cnn_data/finished_files/chunked/val_000.bin \
 --vocab_path=/home/jupyter/cnn_data/finished_files/vocab \
 --log_root=/home/jupyter/pg-log \
