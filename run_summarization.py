@@ -302,7 +302,7 @@ def main(unused_argv):
     vocab = Vocab(FLAGS.vocab_path, FLAGS.vocab_size)  # create a vocabulary
 
     # If in decode mode, set batch_size = beam_size
-    # Reason: in decode mode, we decode one example at a time.
+    # Reason: in decode mode, we decode one example at a time. why??????
     # On each step, we have beam_size-many hypotheses in the beam, so we need to make a batch of these hypotheses.
     if FLAGS.mode == 'decode':
         FLAGS.batch_size = FLAGS.beam_size

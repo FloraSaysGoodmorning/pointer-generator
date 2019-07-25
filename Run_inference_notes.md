@@ -36,7 +36,8 @@ python3 run_summarization.py \
 --data_path=/home/jupyter/cnn_data/finished_files/chunked/val_000.bin \
 --vocab_path=/home/jupyter/cnn_data/finished_files/vocab \
 --log_root=/home/jupyter/pg-log \
---exp_name=$EXPERIMENT_NAME
+--exp_name=$EXPERIMENT_NAME \
+--single_pass=True
 ```
 
 ### Credits  
